@@ -61,7 +61,7 @@ const QComponents = ({ item, idItem, state, setState, Qn }) => {
   return (
     <Row
       align="middle"
-      justify={Qn === "Q2" ? "center" : "space-between"}
+      justify={Qn === "Q2" || xs ? "center" : "space-between"}
       gutter={32}
       {...(xs && { gutter: [16, 16] })}
     >

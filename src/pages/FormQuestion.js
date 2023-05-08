@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Button, Form, Input, Typography } from "antd";
+import { Button, Form, Grid, Input, Typography } from "antd";
 import React, { Fragment, useEffect, useState } from "react";
 import SDDnDWrapper from "../components/SDDnDWrapper";
 import SDDragNDrop from "../components/sd-component-input/SDDragNDrop";
@@ -12,6 +12,7 @@ import { disabledButtonHandler } from "../constants/disabledButton";
 const FormQuestion = ({ ipData }) => {
   const { Title, Text } = Typography;
   let tempArr = [];
+  const { xs } = Grid.useBreakpoint();
 
   const [form] = Form?.useForm();
 
@@ -69,7 +70,7 @@ const FormQuestion = ({ ipData }) => {
 
   return (
     <Fragment>
-      <div style={{ textAlign: "center" }}>
+      <div style={{ textAlign: "center", marginBottom: xs ? 80 : 50 }}>
         <Title level={3}>Form Kuesioner </Title>
         <Title level={4}>Tugas Akhir Sistem Penentuan Dosen Pembimbing</Title>
         <Title level={5}>By : Restu Averian Putra</Title>
@@ -87,6 +88,13 @@ const FormQuestion = ({ ipData }) => {
           span: 24,
         }}
         scrollToFirstError
+        {...(xs && {
+          style: {
+            display: "flex",
+            justifyContent: "center",
+            flexDirection: "column",
+          },
+        })}
       >
         <SDSelect
           name="kaprodi_name"
@@ -116,7 +124,7 @@ const FormQuestion = ({ ipData }) => {
             </SDDnDWrapper>
           ))}
         </SDDragNDrop>
-        <Button style={{ width: "100%" }} type="primary" onClick={addQ2Data}>
+        <Button type="primary" onClick={addQ2Data} className="button-add">
           Tambah
         </Button>
 
@@ -138,7 +146,7 @@ const FormQuestion = ({ ipData }) => {
             </SDDnDWrapper>
           ))}
         </SDDragNDrop>
-        <Button type="primary" style={{ width: "100%" }} onClick={addQ3Data}>
+        <Button type="primary" onClick={addQ3Data}>
           Tambah
         </Button>
 

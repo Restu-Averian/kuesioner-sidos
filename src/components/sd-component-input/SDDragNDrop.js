@@ -56,7 +56,9 @@ const SDDragNDrop = ({
       {...formItemObj}
     >
       <ReactSortable
-        style={{ cursor: "grabbing" }}
+        style={{
+          cursor: "grabbing",
+        }}
         list={state}
         setList={setState}
         animation={200}
