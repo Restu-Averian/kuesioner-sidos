@@ -4,7 +4,7 @@ const Q2DisabledButtonHandler = (stateQ2) => {
     stateQ2?.length === 0 ||
     stateQ2?.some((data) => data?.keterangan === "") ||
     stateQ2?.some((data) => data?.skala === null) ||
-    stateQ2[0]?.CR < 0.1
+    stateQ2[0]?.CR > 0.1
   );
 };
 const Q3DisabledButtonHandler = (stateQ3) => {
