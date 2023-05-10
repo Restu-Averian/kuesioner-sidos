@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Layout, Spin } from "antd";
+import { Layout } from "antd";
 import { collection, getDocs } from "firebase/firestore";
 import { Fragment, useEffect, useState } from "react";
 import LoadingComponent from "./components/LoadingComponent";

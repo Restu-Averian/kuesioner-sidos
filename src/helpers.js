@@ -97,4 +97,10 @@ const sortedData = (arrDatas, based) => {
   });
 };
 
-export { addDataHandler, sortedData };
+const extractNum = (string) => parseInt(string.replace(/\D/g, ""));
+
+const sumAllArrDatas = (arr) => arr?.reduce((acc, curr) => acc + curr, 0);
+
+const roundUp3 = (num) => Math.ceil(num * 1000) / 1000;
+
+export { addDataHandler, sortedData, extractNum, sumAllArrDatas, roundUp3 };

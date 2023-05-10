@@ -1,3 +1,5 @@
+import { roundUp3 } from "../helpers";
+
 const dataQ1 = [
   {
     value: "Pak Alde Alanda, S.Kom., M.T.",
@@ -33,7 +35,13 @@ const dataQ2 = [
     id: 1,
     name: "SKS Dosen",
     benefitCost: "cost",
-    skala: 7,
+    skala: {
+      K1: 1 / 1,
+      K2: roundUp3(5 / 1),
+      K3: roundUp3(7 / 1),
+      // K4: 6,
+    },
+
     keterangan:
       "Semakin banyak SKS seorang dosen, semakin tidak direkomendasikan",
   },
@@ -41,7 +49,12 @@ const dataQ2 = [
     id: 2,
     name: "Banyak mahasiswa bimbingan seorang dospem",
     benefitCost: "cost",
-    skala: 5,
+    skala: {
+      K1: roundUp3(1 / 5),
+      K2: 1 / 1,
+      K3: roundUp3(3 / 1),
+      // K4: 1,
+    },
     keterangan:
       "Semakin banyak SKS seorang dosen, semakin tidak direkomendasikan",
   },
@@ -49,17 +62,25 @@ const dataQ2 = [
     id: 3,
     name: "Relevansi judul yang diajukan mahasiswa dengan judul penelitian dosen",
     benefitCost: "benefit",
-    skala: 3,
+    skala: {
+      K1: roundUp3(1 / 7),
+      K2: roundUp3(1 / 3),
+      K3: 1 / 1,
+    },
     keterangan:
       "Semakin mirip/relevan judul TA yang diajukan mahasiswa dnegan penelitian dosen, semakin direkomendasikanlah dosen tersebut",
   },
-  {
-    id: 4,
-    name: "Seorang dosen bersedia atau tidak menjadi dosen pembimbing",
-    benefitCost: "benefit",
-    skala: 1,
-    keterangan: "Jikalau dosen bersedia, maka akan semakin direkomendasikan",
-  },
+  // {
+  //   id: 4,
+  //   name: "Seorang dosen bersedia atau tidak menjadi dosen pembimbing",
+  //   benefitCost: "benefit",
+  //   skala: {
+  //     K1: 1,
+  //     K2: 1,
+  //     K3: 1,
+  //   },
+  //   keterangan: "Jikalau dosen bersedia, maka akan semakin direkomendasikan",
+  // },
 ];
 
 const dataQ3 = [

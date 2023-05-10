@@ -1,18 +1,18 @@
-import { Col, Grid, Input, InputNumber, Radio, Row, Typography } from "antd";
+import { Col, Grid, Input, Radio, Row, Typography } from "antd";
 import React, { Fragment } from "react";
 import { benefitCost } from "../../constants/benefitCost";
-import { sortedData } from "../../helpers";
 import { DeleteOutlined } from "@ant-design/icons";
 import IconDragNDrop from "../IconDragNDrop";
+import InputNumberAHP from "./InputNumberAHP";
 
-const QComponents = ({ item, idItem, state, setState, Qn }) => {
+const QComponents = ({ item, idxItem, state, setState, Qn }) => {
   const { xs } = Grid.useBreakpoint();
   const { Text } = Typography;
   let timeout;
 
   const onChangeHandler = ({ field, value }) => {
-    const newArrDatas = state?.map((data) => {
-      if (data?.id === idItem) {
+    const newArrDatas = state?.map((data, index) => {
+      if (index + 1 === idxItem) {
         return {
           ...data,
           [field]: value,
@@ -24,22 +24,7 @@ const QComponents = ({ item, idItem, state, setState, Qn }) => {
 
     timeout = setTimeout(() => {
       setState(newArrDatas);
-    }, 120);
-  };
-
-  const onChangeSkala = (value) => {
-    const newValueSkala = state?.map((data) => {
-      if (data?.id === idItem) {
-        return {
-          ...data,
-          skala: value,
-        };
-      }
-      return data;
-    });
-
-    sortedData(newValueSkala, "skala");
-    setState(newValueSkala);
+    }, 250);
   };
 
   const onChangeKriteria = ({ target: { value } }) => {
@@ -55,7 +40,39 @@ const QComponents = ({ item, idItem, state, setState, Qn }) => {
   };
 
   const deleteHandler = () => {
-    setState(state?.filter((data) => data?.id !== idItem));
+    const filteredState = state?.filter((data, index) => {
+      return index + 1 !== idxItem;
+    });
+    if (Qn === "Q2") {
+      filteredState?.forEach((data) => {
+        delete data?.skala?.[`K${idxItem}`];
+      });
+
+      const fixValueArrState = filteredState?.map((data) => {
+        const arrNewValueSkala = Object.values(data?.skala)?.map(
+          (valSkala, index) => {
+            return {
+              [`K${index + 1}`]: valSkala,
+            };
+          }
+        );
+
+        const convertArrStateToObj = arrNewValueSkala.reduce((obj, item) => {
+          const key = Object.keys(item)[0]; // Ambil kunci properti pertama dari objek saat ini
+          obj[key] = item[key]; // Set properti pada objek akhir
+          return obj;
+        }, {});
+
+        return {
+          ...data,
+          skala: convertArrStateToObj,
+        };
+      });
+
+      setState(fixValueArrState);
+    } else {
+      setState(filteredState);
+    }
   };
 
   return (
@@ -69,9 +86,11 @@ const QComponents = ({ item, idItem, state, setState, Qn }) => {
         <IconDragNDrop />
       </Col>
       <Col span={xs ? 24 : Qn === "Q3" ? 20 : 7}>
-        {Qn === "Q2" && <Text type="secondary">Nama Kriteria</Text>}
+        {Qn === "Q2" && (
+          <Text type="secondary">Nama Kriteria (K{idxItem})</Text>
+        )}
 
-        <Input defaultValue={item?.name} onChange={onChangeKriteria} />
+        <Input value={item?.name} onChange={onChangeKriteria} />
       </Col>
       {Qn === "Q2" && (
         <Fragment>
@@ -80,12 +99,8 @@ const QComponents = ({ item, idItem, state, setState, Qn }) => {
               <Row justify="space-between" style={{ marginBottom: 10 }}>
                 <Col span={10}>
                   <Text type="secondary">Skala prioritas</Text>
-                  <InputNumber
-                    min={1}
-                    controls={false}
-                    defaultValue={item?.skala}
-                    onChange={onChangeSkala}
-                  />
+
+                  <InputNumberAHP item={item} idxItem={idxItem} />
                 </Col>
                 <Col span={14}>
                   <Text type="secondary">Benefit/Cost</Text>
@@ -93,6 +108,7 @@ const QComponents = ({ item, idItem, state, setState, Qn }) => {
                     optionType="button"
                     options={benefitCost}
                     value={item?.benefitCost}
+                    onChange={onChangeBenCost}
                   />
                 </Col>
               </Row>
@@ -101,7 +117,7 @@ const QComponents = ({ item, idItem, state, setState, Qn }) => {
                   <Text type="secondary">Keterangan</Text>
 
                   <Input.TextArea
-                    defaultValue={item?.keterangan}
+                    value={item?.keterangan}
                     autoSize
                     onChange={onChangeKeterangan}
                   />
@@ -112,12 +128,7 @@ const QComponents = ({ item, idItem, state, setState, Qn }) => {
             <Fragment>
               <Col span={3}>
                 <Text type="secondary">Skala prioritas</Text>
-                <InputNumber
-                  min={1}
-                  controls={false}
-                  defaultValue={item?.skala}
-                  onChange={onChangeSkala}
-                />
+                <InputNumberAHP item={item} idxItem={idxItem} />
               </Col>
               <Col span={4}>
                 <Text type="secondary">Benefit/Cost</Text>
@@ -132,7 +143,7 @@ const QComponents = ({ item, idItem, state, setState, Qn }) => {
                 <Text type="secondary">Keterangan</Text>
 
                 <Input.TextArea
-                  defaultValue={item?.keterangan}
+                  value={item?.keterangan}
                   autoSize
                   onChange={onChangeKeterangan}
                 />
@@ -142,12 +153,16 @@ const QComponents = ({ item, idItem, state, setState, Qn }) => {
         </Fragment>
       )}
 
-      <Col span="auto">
-        <DeleteOutlined
-          style={{ color: "red", padding: 20, fontSize: 18 }}
-          onClick={deleteHandler}
-        />
-      </Col>
+      {state?.length > 3 ? (
+        <Col span="auto">
+          <DeleteOutlined
+            style={{ color: "red", padding: 20, fontSize: 18 }}
+            onClick={deleteHandler}
+          />
+        </Col>
+      ) : (
+        <Fragment />
+      )}
     </Row>
   );
 };
