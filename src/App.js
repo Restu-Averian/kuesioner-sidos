@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Layout } from "antd";
+import { Layout, Result } from "antd";
 import { collection, getDocs } from "firebase/firestore";
 import { Fragment, useEffect, useState } from "react";
 import LoadingComponent from "./components/LoadingComponent";
@@ -31,7 +31,10 @@ function App() {
   };
 
   useEffect(() => {
-    setIsLsExist(localStorage?.getItem("isFilled"));
+    setIsLsExist(
+      localStorage?.getItem("isFilled") ||
+        Boolean(localStorage?.getItem("kaprodi"))
+    );
   }, [isLsExist]);
 
   useEffect(() => {
@@ -45,7 +48,21 @@ function App() {
       ) : (
         <Fragment>
           {isLsExist || arrDatasFromFb?.some((ele) => ele?.ip === ipData) ? (
-            <h1>Terima kasih ya pak/buk</h1>
+            <Result
+              status="success"
+              title={`Terima kasih ${
+                localStorage?.getItem("kaprodi")?.includes("Rasyidah") ||
+                localStorage?.getItem("kaprodi")?.includes("Defni")
+                  ? "Buk"
+                  : "Pak"
+              } ${localStorage?.getItem("kaprodi")} `}
+              subTitle={` Terima kasih telah meluangkan waktunya ya, ${
+                localStorage?.getItem("kaprodi")?.includes("Rasyidah") ||
+                localStorage?.getItem("kaprodi")?.includes("Defni")
+                  ? "Buk"
+                  : "Pak"
+              } ${localStorage?.getItem("kaprodi")}`}
+            />
           ) : (
             <Layout.Content className="sd-main-content">
               <FormQuestion ipData={ipData} />

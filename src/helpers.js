@@ -18,6 +18,8 @@ const addDataHandler = async (data, setIsLoadingBtn) => {
           onOkHandler: () => {
             setIsLoadingBtn(false);
             localStorage?.setItem("isFilled", true);
+            localStorage?.setItem("kaprodi", data?.kaprodi_name);
+
             window.location.reload();
           },
         });
@@ -59,6 +61,7 @@ const addDataHandler = async (data, setIsLoadingBtn) => {
               onOkHandler: () => {
                 setIsLoadingBtn(false);
                 localStorage?.setItem("isFilled", true);
+                localStorage?.setItem("kaprodi", data?.kaprodi_name);
                 window.location.reload();
               },
             });
