@@ -168,6 +168,7 @@ const FormQuestion = ({ ipData }) => {
                     style={{
                       fontSize: 20,
                       cursor: "pointer",
+                      marginLeft: 10,
                     }}
                     onClick={() => setIsOpenModalQ2(true)}
                   />
@@ -250,7 +251,7 @@ const FormQuestion = ({ ipData }) => {
             </Col>
           </Row>
 
-          <SDDragNDrop
+          {/* <SDDragNDrop
             labelComponent={
               <Fragment>
                 <Text strong style={{ fontSize: 16 }}>
@@ -295,7 +296,7 @@ const FormQuestion = ({ ipData }) => {
             style={{ fontSize: 18, fontWeight: "bold" }}
           >
             Tambah Tahapan
-          </Button>
+          </Button> */}
 
           <Form.Item hidden name="ip">
             <Input hidden />
@@ -333,10 +334,8 @@ const FormQuestion = ({ ipData }) => {
               Bobot masing-masing kriteria akan dibandingkan dengan kriteria
               lain berdasarkan table perbandingan skala yang ditampilkan di
               bawah ini. Tiap bobot yang diberikan, akan langsung dicek
-              kestabilannya dengan kalkulasi AHP. Value yang diberikan hanya
-              dapat diberikan sesuai dari penelitian-penelitian yang terkait
-              dengan hal tersebut. Tidak ada salah dan benar atas bobot yang
-              Bapak/Ibu Kaprodi berikan.
+              kestabilannya dengan kalkulasi AHP. Tidak ada salah dan benar atas
+              bobot yang Bapak/Ibu Kaprodi berikan.
             </Text>
 
             <Title level={4}>Table Skala Banding Antar Kriteria</Title>
@@ -348,7 +347,7 @@ const FormQuestion = ({ ipData }) => {
           </Fragment>
         </Modal>
 
-        <Modal
+        {/* <Modal
           open={isOpenModalQ3}
           onCancel={() => setIsOpenModalQ3(false)}
           // title="Mengenai AHP secara sederhana"
@@ -368,7 +367,7 @@ const FormQuestion = ({ ipData }) => {
               pembimbing sekarang di jurusan TI PNP
             </Text>
           </Fragment>
-        </Modal>
+        </Modal> */}
       </SDContext.Provider>
     </Fragment>
   );

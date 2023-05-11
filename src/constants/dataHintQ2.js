@@ -41,7 +41,7 @@ const dataSourceTableSkalaBanding = [
 
 const columnsTableSkalaBanding = [
   {
-    title: "Kepentingan",
+    title: "Kepentingan / Skala",
     dataIndex: "kepentingan",
     key: "kepentingan",
   },
