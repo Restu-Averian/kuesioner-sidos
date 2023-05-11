@@ -6,6 +6,8 @@ const addDataHandler = async (data, setIsLoadingBtn) => {
   const arrDatas = [];
   const snapshots = await getDocs(collection(dbFs, "questions"));
 
+  console.log("data;  ", data);
+
   if (snapshots?.docs?.length === 0) {
     try {
       addDoc(collection(dbFs, "questions"), data)?.then(() => {

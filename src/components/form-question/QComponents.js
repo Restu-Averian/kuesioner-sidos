@@ -1,14 +1,16 @@
-import { Col, Grid, Input, Radio, Row, Typography } from "antd";
+import { Col, Grid, Input, Radio, Row, Tooltip, Typography } from "antd";
 import React, { Fragment } from "react";
 import { benefitCost } from "../../constants/benefitCost";
 import { DeleteOutlined } from "@ant-design/icons";
 import IconDragNDrop from "../IconDragNDrop";
 import InputNumberAHP from "./InputNumberAHP";
+import { QuestionCircleFilled } from "@ant-design/icons";
 
 const QComponents = ({ item, idxItem, state, setState, Qn }) => {
   const { xs } = Grid.useBreakpoint();
   const { Text } = Typography;
-  let timeout;
+  // let timeoutKriteria;
+  // let timeoutKeterangan;
 
   const onChangeHandler = ({ field, value }) => {
     const newArrDatas = state?.map((data, index) => {
@@ -20,18 +22,24 @@ const QComponents = ({ item, idxItem, state, setState, Qn }) => {
       }
       return data;
     });
-    clearTimeout(timeout);
 
-    timeout = setTimeout(() => {
-      setState(newArrDatas);
-    }, 250);
+    // timeout = setTimeout(() => {
+    // }, 250);
+    setState(newArrDatas);
   };
 
   const onChangeKriteria = ({ target: { value } }) => {
+    // clearTimeout(timeoutKriteria);
+    // timeoutKriteria = setTimeout(() => {
+    //   onChangeHandler({ field: "name", value });
+    // }, 150);
     onChangeHandler({ field: "name", value });
   };
 
   const onChangeKeterangan = ({ target: { value } }) => {
+    // clearTimeout(timeoutKeterangan);
+    // timeoutKeterangan = setTimeout(() => {
+    // }, 250);
     onChangeHandler({ field: "keterangan", value });
   };
 
@@ -112,7 +120,11 @@ const QComponents = ({ item, idxItem, state, setState, Qn }) => {
           <Text type="secondary">Nama Kriteria (K{idxItem})</Text>
         )}
 
-        <Input value={item?.name} onChange={onChangeKriteria} />
+        <Input
+          defaultValue={item?.name}
+          onChange={onChangeKriteria}
+          value={item?.name}
+        />
       </Col>
       {Qn === "Q2" && (
         <Fragment>
@@ -140,6 +152,7 @@ const QComponents = ({ item, idxItem, state, setState, Qn }) => {
 
                   <Input.TextArea
                     value={item?.keterangan}
+                    defaultValue={item?.keterangan}
                     autoSize
                     onChange={onChangeKeterangan}
                   />
@@ -166,6 +179,7 @@ const QComponents = ({ item, idxItem, state, setState, Qn }) => {
 
                 <Input.TextArea
                   value={item?.keterangan}
+                  defaultValue={item?.keterangan}
                   autoSize
                   onChange={onChangeKeterangan}
                 />
@@ -175,7 +189,7 @@ const QComponents = ({ item, idxItem, state, setState, Qn }) => {
         </Fragment>
       )}
 
-      {state?.length > 3 ? (
+      {state?.length > 3 && (Qn === "Q3" || (Qn === "Q2" && idxItem !== 1)) ? (
         <Col span="auto">
           <DeleteOutlined
             style={{ color: "red", padding: 20, fontSize: 18 }}
@@ -184,6 +198,20 @@ const QComponents = ({ item, idxItem, state, setState, Qn }) => {
         </Col>
       ) : (
         <Fragment />
+      )}
+
+      {idxItem === 1 && Qn === "Q2" && (
+        <Col span="auto">
+          <Tooltip title="Perhitungan akan dilakukan dengan algoritma winnowing dengan membandingkan judul penelitian dosen dan judul yang diajukan">
+            <QuestionCircleFilled
+              style={{
+                fontSize: 18,
+                padding: 20,
+                cursor: "pointer",
+              }}
+            />
+          </Tooltip>
+        </Col>
       )}
     </Row>
   );

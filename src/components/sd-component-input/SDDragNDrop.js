@@ -6,6 +6,7 @@ import { ReactSortable } from "react-sortablejs";
 const SDDragNDrop = ({
   name,
   label,
+  labelComponent,
   required = false,
   rules = [],
   children,
@@ -43,9 +44,11 @@ const SDDragNDrop = ({
   return (
     <Form.Item
       label={
-        <Text strong style={{ fontSize: 16 }}>
-          {label}
-        </Text>
+        labelComponent || (
+          <Text strong style={{ fontSize: 16 }}>
+            {label}
+          </Text>
+        )
       }
       {...(xs && {
         style: { padding: 18 },

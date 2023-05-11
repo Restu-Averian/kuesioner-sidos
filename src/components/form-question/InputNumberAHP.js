@@ -1,7 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Col, InputNumber, Row, Typography } from "antd";
+import { Col, Row, Select, Typography } from "antd";
 import React, { Fragment, useEffect } from "react";
 import { consIndexDatas } from "../../constants/ahpRelated";
+import valSkala from "../../constants/valSkala";
 import { useSDContext } from "../../context";
 import { extractNum, roundUp3, sumAllArrDatas } from "../../helpers";
 
@@ -115,8 +116,6 @@ const InputNumberAHP = ({ item, idxItem }) => {
     }, 250);
   };
 
-  console.log("state ; ", state);
-
   useEffect(() => {
     AHPCalculateHandler();
   }, [JSON.stringify(state)]);
@@ -137,8 +136,17 @@ const InputNumberAHP = ({ item, idxItem }) => {
               <Text keyboard>{item?.stringSkala?.[skala[0]]}</Text>{" "}
             </Col>
 
-            <Col span={6}>
-              <InputNumber
+            <Col span={14}>
+              <Select
+                showSearch
+                onChange={(value) => onChangeSkala(value, skala?.[0])}
+                options={valSkala}
+                defaultValue={skala[1]}
+                {...(`K${idxItem}` === skala[0] && {
+                  disabled: true,
+                })}
+              />
+              {/* <InputNumber
                 {...(`K${idxItem}` === skala[0] && {
                   disabled: true,
                 })}
@@ -146,7 +154,7 @@ const InputNumberAHP = ({ item, idxItem }) => {
                 style={{ width: 70 }}
                 defaultValue={skala[1]}
                 onChange={(value) => onChangeSkala(value, skala?.[0])}
-              />
+              /> */}
             </Col>
           </Row>
         );

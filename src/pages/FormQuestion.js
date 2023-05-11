@@ -1,5 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Button, Col, Form, Grid, Input, Row, Tooltip, Typography } from "antd";
+import {
+  Button,
+  Col,
+  Form,
+  Grid,
+  Input,
+  Modal,
+  Row,
+  Table,
+  Tooltip,
+  Typography,
+} from "antd";
 import React, { Fragment, useEffect, useState } from "react";
 import SDDnDWrapper from "../components/SDDnDWrapper";
 import SDDragNDrop from "../components/sd-component-input/SDDragNDrop";
@@ -10,6 +21,10 @@ import QComponents from "../components/form-question/QComponents";
 import { disabledButtonHandler } from "../constants/disabledButton";
 import SDContext from "../context";
 import { QuestionCircleFilled } from "@ant-design/icons";
+import {
+  columnsTableSkalaBanding,
+  dataSourceTableSkalaBanding,
+} from "../constants/dataHintQ2";
 
 const FormQuestion = ({ ipData }) => {
   const { Title, Text } = Typography;
@@ -26,6 +41,8 @@ const FormQuestion = ({ ipData }) => {
   const [isLoadingBtn, setIsLoadingBtn] = useState(false);
   const [stateQ2, setStateQ2] = useState(dataQ2);
   const [stateQ3, setStateQ3] = useState(dataQ3);
+  const [isOpenModalQ2, setIsOpenModalQ2] = useState(false);
+  const [isOpenModalQ3, setIsOpenModalQ3] = useState(false);
 
   const [isDisabledButton, setIsDisabledButton] = useState(false);
 
@@ -89,15 +106,22 @@ const FormQuestion = ({ ipData }) => {
     }
   }, [JSON.stringify(stateQ2), JSON.stringify(stateQ3)]);
 
+  useEffect(() => {
+    form?.setFieldsValue({
+      q2: stateQ2,
+    });
+  }, [JSON.stringify(stateQ2)]);
+
   return (
     <Fragment>
       <div style={{ textAlign: "center", marginBottom: xs ? 80 : 50 }}>
         <Title level={3}>Form Kuesioner </Title>
-        <Title level={4}>Tugas Akhir Sistem Penentuan Dosen Pembimbing</Title>
+        <Title level={4}>Tugas Akhir SPK Penentuan Dosen Pembimbing</Title>
         <Title level={5}>By : Restu Averian Putra</Title>
         <Text level={5}>
-          Form ini ditujukan untuk pengumpulan data yang akan digunakan untuk
-          sempro
+          Form ini dibuat untuk mendapatkan skala prioritas per kriteria
+          berdasarkan preferensi Kaprodi jurusan TI PNP yang akan digunakan
+          untuk pembangunan Tugas Akhir mengenai SPK Penentuan Dosen Pembimbing
         </Text>
       </div>
       <SDContext.Provider
@@ -132,11 +156,23 @@ const FormQuestion = ({ ipData }) => {
           />
           <Form.Item
             label={
-              <Text strong style={{ fontSize: 16 }}>
-                Kriteria apa yang sekiranya digunakan oleh Kaprodi untuk
-                menentukan seorang dosen untuk menjadi dosen pembimbing untuk
-                seorang mahasiswa akhir ?
-              </Text>
+              <Fragment>
+                <Text strong style={{ fontSize: 16 }}>
+                  Kriteria apa yang sekiranya digunakan oleh Kaprodi untuk
+                  menentukan seorang dosen untuk menjadi dosen pembimbing untuk
+                  seorang mahasiswa akhir ?
+                </Text>
+
+                <Tooltip title="Klik untuk lihat petunjuk sederhana">
+                  <QuestionCircleFilled
+                    style={{
+                      fontSize: 20,
+                      cursor: "pointer",
+                    }}
+                    onClick={() => setIsOpenModalQ2(true)}
+                  />
+                </Tooltip>
+              </Fragment>
             }
             name="q2"
             // formItemObj={{
@@ -215,7 +251,26 @@ const FormQuestion = ({ ipData }) => {
           </Row>
 
           <SDDragNDrop
-            label="Apakah urutan untuk penentuan dosen pembimbing di jurusan TI PNP pada saat ini telah benar ? kalau belum mohon untuk diurutkan"
+            labelComponent={
+              <Fragment>
+                <Text strong style={{ fontSize: 16 }}>
+                  Apakah urutan untuk penentuan dosen pembimbing di jurusan TI
+                  PNP pada saat ini telah benar ? kalau belum mohon untuk
+                  diurutkan
+                </Text>
+
+                <Tooltip title="Klik untuk lihat petunjuk sederhana">
+                  <QuestionCircleFilled
+                    style={{
+                      fontSize: 20,
+                      marginLeft: 10,
+                      cursor: "pointer",
+                    }}
+                    onClick={() => setIsOpenModalQ3(true)}
+                  />
+                </Tooltip>
+              </Fragment>
+            }
             name="q3"
             state={stateQ3}
             setState={setStateQ3}
@@ -257,6 +312,63 @@ const FormQuestion = ({ ipData }) => {
             </Button>
           </Form.Item>
         </Form>
+
+        <Modal
+          open={isOpenModalQ2}
+          onCancel={() => setIsOpenModalQ2(false)}
+          // title="Mengenai AHP secara sederhana"
+          okButtonProps={{
+            style: {
+              display: "none",
+            },
+          }}
+          width={1000}
+        >
+          <Fragment>
+            <Title level={4}>Disclaimer</Title>
+
+            <Text>
+              Pertanyaan ini akan ditujukan sebagai referensi dalam penentuan
+              bobot dari masing-masing kriteria yang Bapak/Ibu Kaprodi berikan.
+              Bobot masing-masing kriteria akan dibandingkan dengan kriteria
+              lain berdasarkan table perbandingan skala yang ditampilkan di
+              bawah ini. Tiap bobot yang diberikan, akan langsung dicek
+              kestabilannya dengan kalkulasi AHP. Value yang diberikan hanya
+              dapat diberikan sesuai dari penelitian-penelitian yang terkait
+              dengan hal tersebut. Tidak ada salah dan benar atas bobot yang
+              Bapak/Ibu Kaprodi berikan.
+            </Text>
+
+            <Title level={4}>Table Skala Banding Antar Kriteria</Title>
+            <Table
+              pagination={false}
+              dataSource={dataSourceTableSkalaBanding}
+              columns={columnsTableSkalaBanding}
+            />
+          </Fragment>
+        </Modal>
+
+        <Modal
+          open={isOpenModalQ3}
+          onCancel={() => setIsOpenModalQ3(false)}
+          // title="Mengenai AHP secara sederhana"
+          okButtonProps={{
+            style: {
+              display: "none",
+            },
+          }}
+          width={1000}
+        >
+          <Fragment>
+            <Title level={4}>Disclaimer</Title>
+
+            <Text>
+              Pertanyaan ini akan digunakan untuk memastikan apakah urutan yang
+              saya sediakan dibawah ini telah benar dalam penentuan dosen
+              pembimbing sekarang di jurusan TI PNP
+            </Text>
+          </Fragment>
+        </Modal>
       </SDContext.Provider>
     </Fragment>
   );

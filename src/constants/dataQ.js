@@ -33,57 +33,58 @@ const dataQ1 = [
 const dataQ2 = [
   {
     id: 1,
-    name: "SKS Dosen",
-    benefitCost: "cost",
+    name: "Relevansi judul yang diajukan mahasiswa dengan judul penelitian dosen",
+    benefitCost: "benefit",
     skala: {
       K1: 1 / 1,
-      K2: roundUp3(5 / 1),
-      K3: roundUp3(7 / 1),
-      // K4: 6,
+      K2: 2 / 1,
+      K3: 3 / 1,
     },
     stringSkala: {
       K1: "1",
-      K2: "5",
-      K3: "7",
+      K2: "2",
+      K3: "3",
     },
     keterangan:
-      "Semakin banyak SKS seorang dosen, semakin tidak direkomendasikan",
+      "Semakin mirip/relevan judul TA yang diajukan mahasiswa dnegan penelitian dosen, semakin direkomendasikanlah dosen tersebut",
   },
   {
     id: 2,
-    name: "Banyak mahasiswa bimbingan seorang dospem",
+    name: "SKS Dosen",
     benefitCost: "cost",
     skala: {
-      K1: roundUp3(1 / 5),
-      K2: 1 / 1,
-      K3: roundUp3(3 / 1),
-      // K4: 1,
+      K1: roundUp3(1 / 2),
+      K2: 1,
+      K3: 2,
+      // K4: 6,
     },
     stringSkala: {
-      K1: "1/5",
+      K1: "1/2",
       K2: "1",
-      K3: "3",
+      K3: "2",
     },
     keterangan:
       "Semakin banyak SKS seorang dosen, semakin tidak direkomendasikan",
   },
   {
     id: 3,
-    name: "Relevansi judul yang diajukan mahasiswa dengan judul penelitian dosen",
-    benefitCost: "benefit",
+    name: "Banyak mahasiswa bimbingan seorang dospem",
+    benefitCost: "cost",
     skala: {
-      K1: roundUp3(1 / 7),
-      K2: roundUp3(1 / 3),
-      K3: 1 / 1,
+      K1: roundUp3(1 / 3),
+      K2: roundUp3(1 / 2),
+      K3: 1,
+      // K4: 1,
     },
     stringSkala: {
-      K1: "1/7",
-      K2: "1/3",
+      K1: "1/3",
+      K2: "1/2",
       K3: "1",
     },
     keterangan:
-      "Semakin mirip/relevan judul TA yang diajukan mahasiswa dnegan penelitian dosen, semakin direkomendasikanlah dosen tersebut",
+      "Semakin banyak SKS seorang dosen, semakin tidak direkomendasikan",
   },
+
   // {
   //   id: 4,
   //   name: "Seorang dosen bersedia atau tidak menjadi dosen pembimbing",
