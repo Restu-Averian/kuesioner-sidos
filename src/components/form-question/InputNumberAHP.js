@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Col, InputNumber, Row } from "antd";
+import { Col, InputNumber, Row, Typography } from "antd";
 import React, { Fragment, useEffect } from "react";
 import { consIndexDatas } from "../../constants/ahpRelated";
 import { useSDContext } from "../../context";
@@ -8,6 +8,7 @@ import { extractNum, roundUp3, sumAllArrDatas } from "../../helpers";
 const InputNumberAHP = ({ item, idxItem }) => {
   let totalEachKriteria = {};
   let timeout;
+  const { Text } = Typography;
 
   const {
     arrValueEigenVector,
@@ -19,14 +20,24 @@ const InputNumberAHP = ({ item, idxItem }) => {
     ...data?.skala,
     [skalaData]: value,
   });
+  const newValueStringSkalaChanged = (data, skalaData, value) => ({
+    ...data?.stringSkala,
+    [skalaData]: value?.toString(),
+  });
 
   const newValueOfSkalaTargetted = (data, value) => {
     return {
       ...data?.skala,
       [`K${idxItem}`]: roundUp3(1 / value),
-      // [`string_K${idxItem}`]: `1/${value}`,
     };
   };
+  const newValueStringSkalaTargetted = (data, value) => {
+    return {
+      ...data?.stringSkala,
+      [`K${idxItem}`]: `1/${value}`,
+    };
+  };
+
   const totalSkalaHandler = (arr) => sumAllArrDatas(arr);
 
   const totalSkalaPerKriteria = () => {
@@ -79,6 +90,7 @@ const InputNumberAHP = ({ item, idxItem }) => {
         return {
           ...data,
           skala: newValueOfSkalaChanged(data, skalaData, value),
+          stringSkala: newValueStringSkalaChanged(data, skalaData, value),
           [`totalSkalaK${idxItem}`]: totalSkalaHandler(
             Object.values(newValueOfSkalaChanged(data, skalaData, value))
           ),
@@ -87,6 +99,7 @@ const InputNumberAHP = ({ item, idxItem }) => {
         return {
           ...data,
           skala: newValueOfSkalaTargetted(data, value),
+          stringSkala: newValueStringSkalaTargetted(data, value),
           [`totalSkalaK${idxItem}`]: totalSkalaHandler(
             Object.values(newValueOfSkalaTargetted(data, value))
           ),
@@ -102,22 +115,35 @@ const InputNumberAHP = ({ item, idxItem }) => {
     }, 250);
   };
 
+  console.log("state ; ", state);
+
   useEffect(() => {
     AHPCalculateHandler();
   }, [JSON.stringify(state)]);
 
   return (
     <Fragment>
-      {Object?.entries(item?.skala)?.map((skala) => {
+      {Object?.entries(item?.skala)?.map((skala, index) => {
         return (
-          <Row gutter={8} align="middle" key={skala}>
+          <Row
+            gutter={[8, 8]}
+            align="middle"
+            justify="center"
+            key={skala}
+            style={{ marginBottom: 15 }}
+          >
             <Col span="auto">{skala?.[0]}</Col>
-            <Col span={2}>
+            <Col span={6}>
+              <Text keyboard>{item?.stringSkala?.[skala[0]]}</Text>{" "}
+            </Col>
+
+            <Col span={6}>
               <InputNumber
                 {...(`K${idxItem}` === skala[0] && {
                   disabled: true,
                 })}
                 min={1}
+                style={{ width: 70 }}
                 defaultValue={skala[1]}
                 onChange={(value) => onChangeSkala(value, skala?.[0])}
               />

@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Button, Col, Form, Grid, Input, Row, Typography } from "antd";
+import { Button, Col, Form, Grid, Input, Row, Tooltip, Typography } from "antd";
 import React, { Fragment, useEffect, useState } from "react";
 import SDDnDWrapper from "../components/SDDnDWrapper";
 import SDDragNDrop from "../components/sd-component-input/SDDragNDrop";
@@ -9,11 +9,13 @@ import { addDataHandler } from "../helpers";
 import QComponents from "../components/form-question/QComponents";
 import { disabledButtonHandler } from "../constants/disabledButton";
 import SDContext from "../context";
+import { QuestionCircleFilled } from "@ant-design/icons";
 
 const FormQuestion = ({ ipData }) => {
   const { Title, Text } = Typography;
 
   let newSkalaData = {};
+  let newStringSkalaData = {};
 
   let arrValueEigenVector = [];
 
@@ -35,6 +37,7 @@ const FormQuestion = ({ ipData }) => {
   const addQ2Data = () => {
     for (let i = 0; i < stateQ2?.length + 1; i++) {
       newSkalaData[`K${i + 1}`] = 1 / 1;
+      newStringSkalaData[`K${i + 1}`] = "1";
     }
 
     const newData = {
@@ -42,6 +45,7 @@ const FormQuestion = ({ ipData }) => {
       name: "",
       benefitCost: "benefit",
       skala: newSkalaData,
+      stringSkala: newStringSkalaData,
       keterangan: "",
     };
 
@@ -51,6 +55,10 @@ const FormQuestion = ({ ipData }) => {
         skala: {
           ...data?.skala,
           [`K${stateQ2?.length + 1}`]: 1 / 1,
+        },
+        stringSkala: {
+          ...data?.stringSkala,
+          [`K${stateQ2?.length + 1}`]: "1",
         },
       };
     });
@@ -122,15 +130,19 @@ const FormQuestion = ({ ipData }) => {
             listOptions={dataQ1}
             required
           />
-          <SDDragNDrop
-            label="Kriteria apa yang sekiranya digunakan oleh Kaprodi untuk menentukan seorang dosen untuk menjadi dosen pembimbing untuk seorang mahasiswa akhir ? (urutkan dari yang prioritas sampai tidak terlalu prioritas)"
+          <Form.Item
+            label={
+              <Text strong style={{ fontSize: 16 }}>
+                Kriteria apa yang sekiranya digunakan oleh Kaprodi untuk
+                menentukan seorang dosen untuk menjadi dosen pembimbing untuk
+                seorang mahasiswa akhir ?
+              </Text>
+            }
             name="q2"
-            state={stateQ2}
-            setState={setStateQ2}
-            formItemObj={{
-              tooltip:
-                "Bapak/Ibu bisa melakukan drag untuk menyusun prioritas kriteria, pilihan akan auto sort berdasarkan skala prioritas yang diberikan",
-            }}
+            // formItemObj={{
+            //   tooltip:
+            //     "Bapak/Ibu bisa melakukan drag untuk menyusun prioritas kriteria, pilihan akan auto sort berdasarkan skala prioritas yang diberikan",
+            // }}
           >
             {stateQ2.map((item, index) => (
               <SDDnDWrapper key={index + 1}>
@@ -144,27 +156,61 @@ const FormQuestion = ({ ipData }) => {
                 />
               </SDDnDWrapper>
             ))}
-          </SDDragNDrop>
+          </Form.Item>
+
           <Row
-            align="top"
-            justify="center"
-            style={{ marginBottom: 50, textAlign: "center" }}
+            align="middle"
+            justify="space-between"
+            style={{ marginBottom: 50 }}
           >
             {stateQ2?.length < 20 ? (
-              <Col span={24}>
-                <Button type="primary" onClick={addQ2Data}>
-                  Tambah
+              <Col span={2}>
+                <Button
+                  type="primary"
+                  onClick={addQ2Data}
+                  size="large"
+                  style={{ fontSize: 18, fontWeight: "bold" }}
+                >
+                  Tambah Kriteria
                 </Button>
               </Col>
             ) : (
               <Fragment />
             )}
-            <Col span={24}>Consistency Ratio : {stateQ2?.[0]?.CR}</Col>
-            <Col span={24}>
-              Bobot prioritas sudah termasuk{" "}
-              <span style={{ color: stateQ2?.[0]?.CR < 0.1 ? "green" : "red" }}>
-                {stateQ2?.[0]?.CR < 0.1 ? "Stabil" : "Belum Stabil"}
-              </span>
+            <Col span="auto">
+              <Row align="middle">
+                <Col span={2}>
+                  <Tooltip title="Bobot masing-masing kriteria akan dikatakan stabil kalau Consistency Ratio (CR) kecil dari 0.1">
+                    <QuestionCircleFilled
+                      style={{
+                        fontSize: 20,
+                        cursor: "pointer",
+                      }}
+                    />
+                  </Tooltip>
+                </Col>
+                <Col span={22}>
+                  <Row>
+                    <Col span={24}>
+                      <Title level={4}>
+                        Status Bobot prioritas :
+                        <span
+                          style={{
+                            color: stateQ2?.[0]?.CR < 0.1 ? "green" : "red",
+                          }}
+                        >
+                          {stateQ2?.[0]?.CR < 0.1 ? "Stabil" : "Tidak Stabil"}
+                        </span>
+                      </Title>
+                    </Col>
+                    <Col span={24}>
+                      <Text style={{ fontSize: 16 }}>
+                        Consistency Ratio : {stateQ2?.[0]?.CR}
+                      </Text>
+                    </Col>
+                  </Row>
+                </Col>
+              </Row>
             </Col>
           </Row>
 
@@ -187,8 +233,13 @@ const FormQuestion = ({ ipData }) => {
               </SDDnDWrapper>
             ))}
           </SDDragNDrop>
-          <Button type="primary" onClick={addQ3Data}>
-            Tambah
+          <Button
+            type="primary"
+            onClick={addQ3Data}
+            size="large"
+            style={{ fontSize: 18, fontWeight: "bold" }}
+          >
+            Tambah Tahapan
           </Button>
 
           <Form.Item hidden name="ip">

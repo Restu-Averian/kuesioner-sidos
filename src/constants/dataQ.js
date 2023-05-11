@@ -41,7 +41,11 @@ const dataQ2 = [
       K3: roundUp3(7 / 1),
       // K4: 6,
     },
-
+    stringSkala: {
+      K1: "1",
+      K2: "5",
+      K3: "7",
+    },
     keterangan:
       "Semakin banyak SKS seorang dosen, semakin tidak direkomendasikan",
   },
@@ -55,6 +59,11 @@ const dataQ2 = [
       K3: roundUp3(3 / 1),
       // K4: 1,
     },
+    stringSkala: {
+      K1: "1/5",
+      K2: "1",
+      K3: "3",
+    },
     keterangan:
       "Semakin banyak SKS seorang dosen, semakin tidak direkomendasikan",
   },
@@ -66,6 +75,11 @@ const dataQ2 = [
       K1: roundUp3(1 / 7),
       K2: roundUp3(1 / 3),
       K3: 1 / 1,
+    },
+    stringSkala: {
+      K1: "1/7",
+      K2: "1/3",
+      K3: "1",
     },
     keterangan:
       "Semakin mirip/relevan judul TA yang diajukan mahasiswa dnegan penelitian dosen, semakin direkomendasikanlah dosen tersebut",

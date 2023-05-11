@@ -46,6 +46,7 @@ const QComponents = ({ item, idxItem, state, setState, Qn }) => {
     if (Qn === "Q2") {
       filteredState?.forEach((data) => {
         delete data?.skala?.[`K${idxItem}`];
+        delete data?.stringSkala?.[`K${idxItem}`];
       });
 
       const fixValueArrState = filteredState?.map((data) => {
@@ -56,16 +57,35 @@ const QComponents = ({ item, idxItem, state, setState, Qn }) => {
             };
           }
         );
+        const arrNewValueStringSkala = Object.values(data?.stringSkala)?.map(
+          (valStringSkala, index) => {
+            return {
+              [`K${index + 1}`]: valStringSkala,
+            };
+          }
+        );
 
-        const convertArrStateToObj = arrNewValueSkala.reduce((obj, item) => {
-          const key = Object.keys(item)[0]; // Ambil kunci properti pertama dari objek saat ini
-          obj[key] = item[key]; // Set properti pada objek akhir
-          return obj;
-        }, {});
+        const convertArrStateToObjSkala = arrNewValueSkala.reduce(
+          (obj, item) => {
+            const key = Object.keys(item)[0]; // Ambil kunci properti pertama dari objek saat ini
+            obj[key] = item[key]; // Set properti pada objek akhir
+            return obj;
+          },
+          {}
+        );
+        const convertArrStateToObjStringSkala = arrNewValueStringSkala.reduce(
+          (obj, item) => {
+            const key = Object.keys(item)[0]; // Ambil kunci properti pertama dari objek saat ini
+            obj[key] = item[key]; // Set properti pada objek akhir
+            return obj;
+          },
+          {}
+        );
 
         return {
           ...data,
-          skala: convertArrStateToObj,
+          skala: convertArrStateToObjSkala,
+          stringSkala: convertArrStateToObjStringSkala,
         };
       });
 
@@ -78,13 +98,15 @@ const QComponents = ({ item, idxItem, state, setState, Qn }) => {
   return (
     <Row
       align="middle"
-      justify={Qn === "Q2" || xs ? "center" : "space-between"}
+      justify={xs ? "center" : "space-between"}
       gutter={32}
       {...(xs && { gutter: [16, 16] })}
     >
-      <Col span="auto">
-        <IconDragNDrop />
-      </Col>
+      {Qn === "Q3" && (
+        <Col span="auto">
+          <IconDragNDrop />
+        </Col>
+      )}
       <Col span={xs ? 24 : Qn === "Q3" ? 20 : 7}>
         {Qn === "Q2" && (
           <Text type="secondary">Nama Kriteria (K{idxItem})</Text>
@@ -126,7 +148,7 @@ const QComponents = ({ item, idxItem, state, setState, Qn }) => {
             </Col>
           ) : (
             <Fragment>
-              <Col span={3}>
+              <Col span={5}>
                 <Text type="secondary">Skala prioritas</Text>
                 <InputNumberAHP item={item} idxItem={idxItem} />
               </Col>
