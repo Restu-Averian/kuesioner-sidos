@@ -2,9 +2,11 @@
 import {
   Button,
   Col,
+  Collapse,
   Form,
   Grid,
   Input,
+  List,
   Modal,
   Row,
   Table,
@@ -16,7 +18,7 @@ import SDDnDWrapper from "../components/SDDnDWrapper";
 import SDDragNDrop from "../components/sd-component-input/SDDragNDrop";
 import SDSelect from "../components/sd-component-input/SDSelect";
 import { dataQ1, dataQ2, dataQ3 } from "../constants/dataQ";
-import { addDataHandler } from "../helpers";
+import { addDataHandler, roundUp3 } from "../helpers";
 import QComponents from "../components/form-question/QComponents";
 import { disabledButtonHandler } from "../constants/disabledButton";
 import SDContext from "../context";
@@ -43,6 +45,7 @@ const FormQuestion = ({ ipData }) => {
   const [stateQ3, setStateQ3] = useState(dataQ3);
   const [isOpenModalQ2, setIsOpenModalQ2] = useState(false);
   const [isOpenModalQ3, setIsOpenModalQ3] = useState(false);
+  const [valueEigenVector, setValueEigenVector] = useState([]);
 
   const [isDisabledButton, setIsDisabledButton] = useState(false);
 
@@ -129,6 +132,8 @@ const FormQuestion = ({ ipData }) => {
           stateQ2,
           setStateQ2,
           arrValueEigenVector,
+          setValueEigenVector,
+          valueEigenVector,
         }}
       >
         <Form
@@ -214,7 +219,38 @@ const FormQuestion = ({ ipData }) => {
             ) : (
               <Fragment />
             )}
-            <Col span="auto">
+            <Col
+              span="auto"
+              style={{
+                position: "fixed",
+                bottom: 10,
+                right: 10,
+                padding: 10,
+                backgroundColor: "white",
+                borderRadius: 10,
+                boxShadow: "10px -10px 35px 16px rgba(222, 243, 255, 1)",
+              }}
+            >
+              <Collapse>
+                <Collapse.Panel header="Bobot Kategori" key="1">
+                  <Row>
+                    <Col span={24}>
+                      <Typography.Text>Bobot Kategori : </Typography.Text>
+                    </Col>
+                    <Col span={24}>
+                      <List>
+                        {valueEigenVector?.map((data, idx) => {
+                          return (
+                            <List.Item key={idx}>
+                              K{idx + 1} : {data}
+                            </List.Item>
+                          );
+                        })}
+                      </List>
+                    </Col>
+                  </Row>
+                </Collapse.Panel>
+              </Collapse>
               <Row align="middle">
                 <Col span={2}>
                   <Tooltip title="Bobot masing-masing kriteria akan dikatakan stabil kalau Consistency Ratio (CR) kecil dari 0.1">

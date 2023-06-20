@@ -15,6 +15,8 @@ const InputNumberAHP = ({ item, idxItem }) => {
     arrValueEigenVector,
     stateQ2: state,
     setStateQ2: setState,
+    // valueEigenVector,
+    setValueEigenVector,
   } = useSDContext();
 
   const newValueOfSkalaChanged = (data, skalaData, value) => ({
@@ -54,10 +56,14 @@ const InputNumberAHP = ({ item, idxItem }) => {
   const AHPCalculateHandler = () => {
     totalSkalaPerKriteria();
 
+    // console.log(totalEachKriteria);
+
     const eigenVectorPerData = Object.keys(item?.skala).reduce((acc, key) => {
       acc[key] = item?.skala[key] / totalEachKriteria?.[key];
+      // acc[key] = roundUp3(item?.skala[key] / totalEachKriteria?.[key]);
       return acc;
     }, {});
+    // console.log(eigenVectorPerData);
 
     if (arrValueEigenVector?.length + 1 <= state?.length) {
       arrValueEigenVector?.push(
@@ -65,16 +71,23 @@ const InputNumberAHP = ({ item, idxItem }) => {
       );
     }
 
+    setValueEigenVector(arrValueEigenVector?.map((data) => roundUp3(data)));
+    // console.log(arrValueEigenVector?.map((data) => roundUp3(data)));
+
     const lambdaMax = arrValueEigenVector?.reduce((total, data, index) => {
       return (total += data * totalEachKriteria[`K${index + 1}`]);
     }, 0);
 
+    // console.log("lamda ; ", roundUp3(lambdaMax));
+
     const consistencyIndex = (lambdaMax - state?.length) / (state?.length - 1);
 
+    // console.log("consistencyIndex ; ", roundUp3(consistencyIndex));
     const consistencyRatio =
       consistencyIndex /
       consIndexDatas?.find((ciData) => ciData?.n === state?.length)?.IR;
 
+    // console.log("consistencyRatio ; ", roundUp3(consistencyRatio));
     setState(
       state?.map((data) => ({
         ...data,

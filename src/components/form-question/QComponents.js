@@ -9,7 +9,8 @@ import { QuestionCircleFilled } from "@ant-design/icons";
 const QComponents = ({ item, idxItem, state, setState, Qn }) => {
   const { xs } = Grid.useBreakpoint();
   const { Text } = Typography;
-  // let timeoutKriteria;
+  let timeoutKriteria;
+
   // let timeoutKeterangan;
 
   const onChangeHandler = ({ field, value }) => {
@@ -25,11 +26,12 @@ const QComponents = ({ item, idxItem, state, setState, Qn }) => {
 
     // timeout = setTimeout(() => {
     // }, 250);
+
     setState(newArrDatas);
   };
 
   const onChangeKriteria = ({ target: { value } }) => {
-    // clearTimeout(timeoutKriteria);
+    clearTimeout(timeoutKriteria);
     // timeoutKriteria = setTimeout(() => {
     //   onChangeHandler({ field: "name", value });
     // }, 150);
@@ -121,7 +123,7 @@ const QComponents = ({ item, idxItem, state, setState, Qn }) => {
         )}
 
         <Input
-          defaultValue={item?.name}
+          // defaultValue={item?.name}
           onChange={onChangeKriteria}
           value={item?.name}
         />
